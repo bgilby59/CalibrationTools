@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum
 import multiprocessing as mp
 import threading
@@ -63,7 +65,7 @@ class CalibratorEnum(Enum):
         raise ValueError
 
 
-class Calibrator(ParameterizedClass, QObject):
+class Calibrator(ParameterizedClass, QObject, ABC):
     """Base class of camera intrinsic calibrator. Most of the logic should be implemented here abd the subclasses only implement the core method."""
 
     calibration_request = Signal(object)
@@ -656,6 +658,7 @@ class Calibrator(ParameterizedClass, QObject):
         )
         plot_process.start()
 
+    @abstractmethod
     def _calibration_impl(self, detections: List[BoardDetection]) -> CameraModel:
         """Actual implementation of the calibration. Since this is an abstract class it remains unimplemented."""
-        raise NotImplementedError
+        pass
