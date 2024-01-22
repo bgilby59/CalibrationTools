@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+from abc import ABC
+from abc import abstractmethod
 from typing import List
 from typing import Optional
 from typing import Tuple
@@ -24,7 +25,7 @@ from intrinsic_camera_calibrator.camera_model import CameraModel
 import numpy as np
 
 
-class BoardDetection:
+class BoardDetection(ABC):
     """Base class for all board detections. Acts as an abstract class and implements common logic."""
 
     def __init__(
@@ -80,25 +81,30 @@ class BoardDetection:
         """Return the width of the image associated with the detection."""
         return self.width
 
+    @abstractmethod
     def get_ordered_object_points(self) -> List[np.array]:
         """Return the object points of the board ordered as a list of arrays."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def get_ordered_image_points(self) -> List[np.array]:
         """Return the image points of the board ordered as a list of arrays."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def get_flattened_object_points(self) -> np.array:
         """Return the object points of the board as a (N, 3) array."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def get_flattened_image_points(self) -> np.array:
         """Return the image points of the board as a (N, 2) array."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def get_linear_error_rms(self) -> float:
         """Return RMS error product of the projection of the lines of each row of the detection into the line produced by the first and line point of each row."""
-        raise NotImplementedError
+        pass
 
     def get_center_2d(self) -> np.array:
         """Return the center of detection in the image."""
@@ -199,9 +205,10 @@ class BoardDetection:
 
         return self._cached_flattened_3d_points
 
+    @abstractmethod
     def _get_border_image_points() -> Tuple[np.array, np.array, np.array, np.array]:
         """Return the external borders of the tag in the image."""
-        raise NotImplementedError
+        pass
 
     def get_normalized_skew(self) -> float:
         def angle(a, b, c):
