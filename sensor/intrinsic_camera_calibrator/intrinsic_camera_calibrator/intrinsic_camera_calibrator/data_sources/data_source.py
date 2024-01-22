@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum
 import threading
 
@@ -29,7 +30,7 @@ class DataSourceEnum(Enum):
         return str(self.value)
 
 
-class DataSource:
+class DataSource(ABC):
     def __init__(self, **kwargs):
         self.lock = threading.RLock()
         self.data_callback = None
@@ -61,6 +62,7 @@ class DataSource:
             self.paused = False
             self.on_consumed()
 
+    @abstractmethod
     def on_consumed(self):
         """Acts on the consumer having consumed an image. This method is executed in he source thread as it is connected to a local signal."""
-        raise NotImplementedError
+        pass
