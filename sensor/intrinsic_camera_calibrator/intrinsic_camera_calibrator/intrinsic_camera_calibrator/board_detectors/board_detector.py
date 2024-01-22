@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+from abc import ABC
+from abc import abstractmethod
 import threading
 from typing import Dict
 from typing import Optional
@@ -26,7 +27,7 @@ from intrinsic_camera_calibrator.board_parameters.board_parameters import BoardP
 from intrinsic_camera_calibrator.parameter import ParameterizedClass
 
 
-class BoardDetector(ParameterizedClass, QObject):
+class BoardDetector(ParameterizedClass, QObject, ABC):
     """Base class of board detectors."""
 
     detection_results_signal = Signal(object, object)
@@ -40,9 +41,10 @@ class BoardDetector(ParameterizedClass, QObject):
 
         self.set_parameters(**cfg)
 
+    @abstractmethod
     def detect(self, img):
-        """Slot to detect boards from an image. Subclasses must implement this method."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def single_shot_calibration_error(self, object_points, image_points) -> Tuple[float, float]:
-        raise NotImplementedError
+        pass
